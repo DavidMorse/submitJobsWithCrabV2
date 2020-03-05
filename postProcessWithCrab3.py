@@ -50,8 +50,10 @@ def validateOptions(options):
         error = True
     elif options.inputList is None:
         error = True
+    elif options.analysis is None:
+        error = True
     if error:
-        print('You are missing one or more required options: d, i')
+        print('You are missing one or more required options: a, d, i')
         parser.print_help()
         exit(-1)
     if options.prevJsonFile is not None and options.jsonFile is None:
@@ -122,6 +124,10 @@ usage+="\nExample3 (JSON MODE): %prog -d `pwd`/RootNtuple -i inputList.txt -j [J
 usage+="\nExample4 (PREV JSON MODE): %prog -d `pwd`/RootNtuple -i inputList.txt -j [JSON.txt or URL, https://cms-service-dqm.web.cern.ch/cms-service-dqm/CAF/certification/Collisions12/8TeV/Prompt/Cert_190456-208686_8TeV_PromptReco_Collisions12_JSON.txt] -p [lumiSummary.json from crab report from previous processing of same dataset]"
 
 parser = OptionParser(usage=usage)
+
+parser.add_option("-a", "--analysis", dest="analysis",
+                  help="the analysis type, options are LQ1, LQ2, HH",
+                  metavar="ANALYSIS")
 
 parser.add_option("-d", "--localStorageDir", dest="localStorageDir",
                   help="the directory localStorageDir is where the local job info is kept",
@@ -307,7 +313,7 @@ with open(localInputListFile, 'r') as f:
     if isData:
         dataRun = secondaryDatasetName[secondaryDatasetName.find('Run')+7:secondaryDatasetName.find('Run')+8]
 
-    config.JobType.scriptArgs = ['dataset='+config.Data.inputDataset,'ismc='+str(not isData),'era='+str(year),'dataRun='+dataRun]
+    config.JobType.scriptArgs = ['dataset='+config.Data.inputDataset,'ismc='+str(not isData),'era='+str(year),'dataRun='+dataRun, 'analysis='+options.analysis]
     config.JobType.outputFiles = [outputFile]
     config.Data.unitsPerJob = nUnitsPerJob
 

@@ -47,7 +47,7 @@ parser.add_argument("-dataRun", "--dataRun", type=str, default="X", help="")
 parser.add_argument(
     "-dataset", "--dataset", type=str, default="/my/test/dataset", help=""
 )
-parser.add_argument("-a", "--analysis", type=str, default="", help="")
+parser.add_argument("-analysis", "--analysis", type=str, default="", help="")
 
 args = parser.parse_args()
 print "args = ", args
